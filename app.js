@@ -7,7 +7,7 @@ const WHEAT_TYPES = {
 const FORECAST_ICONS = {
   temperature: "🌡️",
   rainfall: "💧",
-  windSpeed: "🌬️"
+  windSpeed: "༄"
 };
 
 const HISTORY_COLORS = {
