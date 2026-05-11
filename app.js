@@ -33,10 +33,10 @@ const MAP_PROJECTION = {
   east: 153.7,
   north: -10.7,
   south: -43.7,
-  left: 16,
-  right: 336,
-  top: 25,
-  bottom: 286
+  left: 0,
+  right: 449,
+  top: 0,
+  bottom: 420
 };
 
 const STATION_COORDS = {
