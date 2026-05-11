@@ -110,7 +110,7 @@ body::before {
 }
 
 .section-heading {
-  font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
   line-height: 1.15;
 }
 
@@ -128,10 +128,27 @@ label,
 
 .section-label {
   margin: 0 0 10px;
+  font-family: "Sora", sans-serif;
   font-size: 0.8rem;
+  font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
+
+.panel-header .section-label {
+  margin-bottom: 12px;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  letter-spacing: 0.08em;
+}
+
+.visual-title {
+  margin: 22px 0 12px;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.2;
+  color: var(--text);
+}
+
 
 .dashboard {
   display: grid;
