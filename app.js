@@ -40,43 +40,25 @@ const MAP_PROJECTION = {
 };
 
 const STATION_COORDS = {
-  "8297": { lat: -30.278, lon: 116.661 },   // Dalwallinu, WA
-  "10092": { lat: -31.482, lon: 118.279 },  // Merredin, WA
-  "10111": { lat: -31.654, lon: 116.671 },  // Northam, WA
-  "18083": { lat: -33.049, lon: 135.461 },  // Wudinna, SA
-  "22050": { lat: -33.965, lon: 137.716 },  // Kadina, SA
-  "25509": { lat: -35.330, lon: 140.518 },  // Lameroo, SA
-  "41100": { lat: -28.854, lon: 151.168 },  // Texas, QLD
-  "41522": { lat: -27.183, lon: 151.263 },  // Dalby, QLD
-  "41529": { lat: -27.561, lon: 151.953 },  // Toowoomba, QLD
-  "53115": { lat: -29.465, lon: 149.841 },  // Moree, NSW
-  "54038": { lat: -30.325, lon: 149.782 },  // Narrabri, NSW
-  "73142": { lat: -34.640, lon: 148.025 },  // Cootamundra, NSW
-  "76047": { lat: -35.071, lon: 142.317 },  // Ouyen, VIC
-  "79100": { lat: -36.718, lon: 142.196 },  // Horsham, VIC
-  "80128": { lat: -36.269, lon: 143.352 },  // Charlton, VIC
-  "91311": { lat: -41.433, lon: 147.144 },  // Launceston, TAS
-  "91375": { lat: -41.685, lon: 147.078 },  // Cressy, TAS
-  "93036": { lat: -41.929, lon: 147.493 }   // Campbell Town, TAS
+  "8297": { lat: -30.278, lon: 116.661 },
+  "10092": { lat: -31.482, lon: 118.279 },
+  "10111": { lat: -31.654, lon: 116.671 },
+  "18083": { lat: -33.049, lon: 135.461 },
+  "22050": { lat: -33.965, lon: 137.716 },
+  "25509": { lat: -35.330, lon: 140.518 },
+  "41100": { lat: -28.854, lon: 151.168 },
+  "41522": { lat: -27.183, lon: 151.263 },
+  "41529": { lat: -27.561, lon: 151.953 },
+  "53115": { lat: -29.465, lon: 149.841 },
+  "54038": { lat: -30.325, lon: 149.782 },
+  "73142": { lat: -34.640, lon: 148.025 },
+  "76047": { lat: -35.071, lon: 142.317 },
+  "79100": { lat: -36.718, lon: 142.196 },
+  "80128": { lat: -36.269, lon: 143.352 },
+  "91311": { lat: -41.433, lon: 147.144 },
+  "91375": { lat: -41.685, lon: 147.078 },
+  "93036": { lat: -41.929, lon: 147.493 }
 };
-
-function projectStationPoint(point) {
-  const x =
-    MAP_PROJECTION.left +
-    ((point.lon - MAP_PROJECTION.west) / (MAP_PROJECTION.east - MAP_PROJECTION.west)) *
-      (MAP_PROJECTION.right - MAP_PROJECTION.left);
-
-  const y =
-    MAP_PROJECTION.top +
-    ((point.lat - MAP_PROJECTION.north) / (MAP_PROJECTION.south - MAP_PROJECTION.north)) *
-      (MAP_PROJECTION.bottom - MAP_PROJECTION.top);
-
-  return {
-    x: Number(x.toFixed(1)),
-    y: Number(y.toFixed(1))
-  };
-}
-
 
 const forecastData = window.FORECAST_DATA;
 const historicalData = window.HISTORICAL_DATA;
@@ -392,7 +374,6 @@ function renderMap() {
       `).join("")}
       ${mapData.states.map((stateShape) => `
         <path d="${stateShape.path}" fill="none" stroke="#8fc7ff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" data-tooltip="${stateShape.name}"></path>
-
       `).join("")}
       ${stationList.map((station) => renderStationMarker(station, colorLookup)).join("")}
     </svg>
@@ -409,13 +390,11 @@ function renderMap() {
 
 function renderStationMarker(station, colorLookup) {
   const stationPoint = STATION_COORDS[String(station.stationNumber)];
-if (!stationPoint) {
-  return "";
-}
+  if (!stationPoint) {
+    return "";
+  }
 
-const point = projectStationPoint(stationPoint);
-
-
+  const point = projectStationPoint(stationPoint);
   const marker = colorLookup.get(String(station.stationNumber));
   if (!marker) {
     return `
@@ -437,6 +416,21 @@ const point = projectStationPoint(stationPoint);
     <circle cx="${point.x}" cy="${point.y}" r="7" fill="${marker.color}" stroke="#06203b" stroke-width="2"
       data-tooltip="${station.stationName}, ${station.state} • Station ${station.stationNumber}"></circle>
   `;
+}
+
+function projectStationPoint(point) {
+  const x = MAP_PROJECTION.left +
+    ((point.lon - MAP_PROJECTION.west) / (MAP_PROJECTION.east - MAP_PROJECTION.west)) *
+      (MAP_PROJECTION.right - MAP_PROJECTION.left);
+
+  const y = MAP_PROJECTION.top +
+    ((point.lat - MAP_PROJECTION.north) / (MAP_PROJECTION.south - MAP_PROJECTION.north)) *
+      (MAP_PROJECTION.bottom - MAP_PROJECTION.top);
+
+  return {
+    x: Number(x.toFixed(1)),
+    y: Number(y.toFixed(1))
+  };
 }
 
 function buildStationColorLookup(primary, secondaryStations) {
