@@ -86,9 +86,6 @@ const elements = {
   cropSelect: document.querySelector("#crop-select"),
   outlookHeading: document.querySelector("#outlook-heading"),
   selectedDateLabel: document.querySelector("#selected-date-label"),
-  dateSlider: document.querySelector("#date-slider"),
-  rangeStart: document.querySelector("#range-start"),
-  rangeEnd: document.querySelector("#range-end"),
   weeklyStats: document.querySelector("#weekly-stats"),
   recommendationText: document.querySelector("#recommendation-text"),
   stationMap: document.querySelector("#station-map"),
@@ -170,11 +167,6 @@ function bindEvents() {
   elements.cropSelect.addEventListener("change", (event) => {
     state.wheatType = event.target.value;
     render();
-  });
-
-  elements.dateSlider.addEventListener("input", (event) => {
-    state.selectedIndex = Number(event.target.value);
-    render(false);
   });
 
   elements.historyMetric.addEventListener("change", (event) => {
@@ -259,24 +251,14 @@ function setDefaultDateIndex() {
   if (!station) {
     state.firstForecastIndex = 0;
     state.selectedIndex = 0;
-    elements.dateSlider.min = "0";
-    elements.dateSlider.max = "0";
-    elements.dateSlider.value = "0";
-    elements.dateSlider.disabled = true;
     return;
   }
 
   const today = toLocalDateString(new Date());
   const currentIndex = station.series.findIndex((entry) => entry.date === today);
-  const maxStartIndex = Math.max(0, station.series.length - 7);
 
   state.firstForecastIndex = currentIndex >= 0 ? currentIndex : 0;
   state.selectedIndex = state.firstForecastIndex;
-
-  elements.dateSlider.min = String(state.firstForecastIndex);
-  elements.dateSlider.max = String(maxStartIndex);
-  elements.dateSlider.value = String(state.selectedIndex);
-  elements.dateSlider.disabled = false;
 }
 
 function syncHistoryDateSelectors() {
@@ -303,39 +285,28 @@ function syncHistoryDateSelectors() {
   elements.historyEnd.value = state.historyEnd;
 }
 
-function render(updateForecastSlider = true) {
-  renderWeeklyOutlook(updateForecastSlider);
+function render() {
+  renderWeeklyOutlook();
   renderMap();
   renderHistoricalComparison();
 }
 
-function renderWeeklyOutlook(updateForecastSlider) {
+function renderWeeklyOutlook() {
   const station = getForecastStation();
   const crop = WHEAT_TYPES[state.wheatType];
   if (!station || !crop) {
     elements.outlookHeading.textContent = "7-day outlook";
     elements.selectedDateLabel.textContent = "";
-    elements.rangeStart.textContent = "Now";
-    elements.rangeEnd.textContent = "End of forecast";
     elements.recommendationText.textContent = "Select a primary location and wheat type in the Map section to view the 7-day prediction.";
     elements.weeklyStats.innerHTML = "";
-    if (updateForecastSlider) {
-      elements.dateSlider.value = "0";
-    }
     return;
   }
 
   const week = station.series.slice(state.selectedIndex, state.selectedIndex + 7);
   const stats = summarizeWeek(week);
 
-  if (updateForecastSlider) {
-    elements.dateSlider.value = String(state.selectedIndex);
-  }
-
   elements.outlookHeading.textContent = `${station.stationName} • ${crop.label}`;
   elements.selectedDateLabel.textContent = `${formatLongDate(week[0].date)} to ${formatLongDate(week[week.length - 1].date)}`;
-  elements.rangeStart.textContent = "Now";
-  elements.rangeEnd.textContent = "End of forecast";
   elements.recommendationText.textContent = buildRecommendationText(station, crop.label, stats);
 
   elements.weeklyStats.innerHTML = `
@@ -542,7 +513,12 @@ function renderHistoricalChart(groups, periods, metric) {
           <circle cx="${point.x}" cy="${point.y}" r="${line.style === "solid" ? 4 : 3}" fill="${line.color}"></circle>
         `).join("")}
       `).join("")}
-      ${periods.map((period, index) => {
+      ${(periods.length === 1
+        ? [{ period: periods[0], index: 0 }]
+        : [
+            { period: periods[0], index: 0 },
+            { period: periods[periods.length - 1], index: periods.length - 1 }
+          ]).map(({ period, index }) => {
         const x = padding + (index / Math.max(periods.length - 1, 1)) * (width - padding * 2);
         return `<text x="${x}" y="${height - 8}" fill="rgba(224,238,255,0.72)" font-size="12" text-anchor="middle">${formatPeriodLabel(period, true)}</text>`;
       }).join("")}
