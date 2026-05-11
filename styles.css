@@ -230,11 +230,11 @@ label,
   gap: 10px;
 }
 
-select,
-input[type="range"] {
+select {
   width: 100%;
   font: inherit;
 }
+
 
 select {
   appearance: none;
@@ -243,22 +243,6 @@ select {
   background: rgba(5, 19, 36, 0.56);
   color: var(--text);
   padding: 14px 16px;
-}
-
-.slider-wrap {
-  margin-top: 6px;
-}
-
-.slider-legend {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 16px;
-}
-
-input[type="range"] {
-  accent-color: var(--accent);
 }
 
 .stat-tile,
