@@ -46,9 +46,9 @@ const STATION_COORDS = {
   "18083": { lat: -33.049, lon: 135.461 },
   "22050": { lat: -33.965, lon: 137.716 },
   "25509": { lat: -35.330, lon: 140.518 },
-  "41100": { lat: -28.854, lon: 151.168 },
-  "41522": { lat: -27.183, lon: 151.263 },
-  "41529": { lat: -27.561, lon: 151.953 },
+  "41100": { lat: -28.854, lon: 151.168, x: 397, y: 208 },
+  "41522": { lat: -27.183, lon: 151.263, x: 414, y: 198 },
+  "41529": { lat: -27.561, lon: 151.953, x: 423, y: 204 },
   "53115": { lat: -29.465, lon: 149.841 },
   "54038": { lat: -30.325, lon: 149.782 },
   "73142": { lat: -34.640, lon: 148.025 },
@@ -419,6 +419,10 @@ function renderStationMarker(station, colorLookup) {
 }
 
 function projectStationPoint(point) {
+  if (typeof point.x === "number" && typeof point.y === "number") {
+    return { x: point.x, y: point.y };
+  }
+
   const x = MAP_PROJECTION.left +
     ((point.lon - MAP_PROJECTION.west) / (MAP_PROJECTION.east - MAP_PROJECTION.west)) *
       (MAP_PROJECTION.right - MAP_PROJECTION.left);
