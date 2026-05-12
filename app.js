@@ -103,9 +103,9 @@ const elements = {
   hoverTooltip: document.querySelector("#hover-tooltip")
 };
 
-initialize();
+initialise();
 
-function initialize() {
+function initialise() {
   populateForecastLocation();
   populateWheatTypes();
   populateHistoricalMetric();
@@ -295,15 +295,15 @@ function renderWeeklyOutlook() {
   const station = getForecastStation();
   const crop = WHEAT_TYPES[state.wheatType];
   if (!station || !crop) {
-    elements.outlookHeading.textContent = "7-day outlook";
+    elements.outlookHeading.textContent = "7-day Outlook";
     elements.selectedDateLabel.textContent = "";
-    elements.recommendationText.textContent = "Select a primary location and wheat type in the Map section to view the 7-day prediction.";
+    elements.recommendationText.textContent = "Select a primary location and wheat type in the Map section to view the outlook for the next 7 days.";
     elements.weeklyStats.innerHTML = "";
     return;
   }
 
   const week = station.series.slice(state.selectedIndex, state.selectedIndex + 7);
-  const stats = summarizeWeek(week);
+  const stats = summariseWeek(week);
 
   elements.outlookHeading.textContent = `${station.stationName} • ${crop.label}`;
   elements.selectedDateLabel.textContent = `${formatLongDate(week[0].date)} to ${formatLongDate(week[week.length - 1].date)}`;
@@ -317,18 +317,18 @@ function renderWeeklyOutlook() {
 }
 
 function buildRecommendationText(station, cropLabel, stats) {
-  const favorable = stats.avgMaxTemp <= 25 && stats.avgWindSpeed <= 18 && stats.avgRainfall >= 1.2;
+  const favourable = stats.avgMaxTemp <= 25 && stats.avgWindSpeed <= 18 && stats.avgRainfall >= 1.2;
   const cautious = stats.avgMaxTemp > 29 || stats.avgWindSpeed > 22 || stats.avgRainfall < 0.5;
 
-  if (favorable) {
-    return `It is advised to plant ${cropLabel} in ${station.stationName} over this 7-day window. The outlook is favorable for planting conditions.`;
+  if (favourable) {
+    return `Current conditions are flavourable for planting ${cropLabel} in ${station.stationName} over the next 7 days.`;
   }
 
   if (cautious) {
-    return `It is not advised to plant ${cropLabel} in ${station.stationName} over this 7-day window. The outlook is too risky for confident planting conditions.`;
+    return `Current conditions in ${station.stationName} are not ideal for planning ${cropLabel} over the next 7 days due to elevated risk.`;
   }
 
-  return `Planting ${cropLabel} in ${station.stationName} should be approached with caution over this 7-day window. The outlook is mixed, so conditions should be reviewed closely before deciding.`;
+  return `Planting conditions for ${cropLabel} in ${station.stationName} are unceratin over the next 7 days, so monitoring conditions closely is recommended.`;
 }
 
 function renderMap() {
@@ -351,9 +351,9 @@ function renderMap() {
   `;
 
   elements.mapLegend.innerHTML = `
-    ${renderLegendCard("Primary location", primary ? `${primary.stationName}, ${primary.state}` : "Select location", HISTORY_COLORS.primary)}
-    ${secondaryStations[0] ? renderLegendCard("Secondary location 1", `${secondaryStations[0].stationName}, ${secondaryStations[0].state}`, HISTORY_COLORS.secondaryOne) : ""}
-    ${secondaryStations[1] ? renderLegendCard("Secondary location 2", `${secondaryStations[1].stationName}, ${secondaryStations[1].state}`, HISTORY_COLORS.secondaryTwo) : ""}
+    ${renderLegendCard("Primary Location", primary ? `${primary.stationName}, ${primary.state}` : "Select Location", HISTORY_COLORS.primary)}
+    ${secondaryStations[0] ? renderLegendCard("Secondary Location 1", `${secondaryStations[0].stationName}, ${secondaryStations[0].state}`, HISTORY_COLORS.secondaryOne) : ""}
+    ${secondaryStations[1] ? renderLegendCard("Secondary Location 2", `${secondaryStations[1].stationName}, ${secondaryStations[1].state}`, HISTORY_COLORS.secondaryTwo) : ""}
   `;
 
   attachTooltipListeners(elements.stationMap);
@@ -613,7 +613,7 @@ function renderStatTile(icon, label, value) {
   `;
 }
 
-function summarizeWeek(week) {
+function summariseWeek(week) {
   return {
     avgMaxTemp: average(week.map((entry) => entry.maxTemp)),
     avgMinTemp: average(week.map((entry) => entry.minTemp)),
