@@ -23,9 +23,9 @@ const HISTORICAL_METRICS = {
 };
 
 const TEMPERATURE_MODES = {
-  both: { label: "Min & max temp" },
-  min: { label: "Min temp" },
-  max: { label: "Max temp" }
+  both: { label: "Min & Max Temp" },
+  min: { label: "Min Temp Only" },
+  max: { label: "Max Temp Only" }
 };
 
 const MAP_PROJECTION = {
