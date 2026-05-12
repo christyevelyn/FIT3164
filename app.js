@@ -321,14 +321,14 @@ function buildRecommendationText(station, cropLabel, stats) {
   const cautious = stats.avgMaxTemp > 29 || stats.avgWindSpeed > 22 || stats.avgRainfall < 0.5;
 
   if (favourable) {
-    return `Current conditions are flavourable for planting ${cropLabel} in ${station.stationName} over the next 7 days.`;
+    return `Current conditions are favourable for planting ${cropLabel} in ${station.stationName} over the next 7 days.`;
   }
 
   if (cautious) {
-    return `Current conditions in ${station.stationName} are not ideal for planning ${cropLabel} over the next 7 days due to elevated risk.`;
+    return `Current conditions in ${station.stationName} are not ideal for planting ${cropLabel} over the next 7 days due to elevated risk.`;
   }
 
-  return `Planting conditions for ${cropLabel} in ${station.stationName} are unceratin over the next 7 days, so monitoring conditions closely is recommended.`;
+  return `Planting conditions for ${cropLabel} in ${station.stationName} are uncertain over the next 7 days, so monitoring conditions closely is recommended.`;
 }
 
 function renderMap() {
