@@ -12,7 +12,7 @@ RAINFALL_HISTORY_SOURCE = Path(r"C:\Users\georg\AppData\Local\Temp\Wind Speed.xl
 WIND_HISTORY_SOURCE = Path(r"C:\Users\georg\AppData\Local\Temp\Temperature.xlsx")
 TEMPERATURE_HISTORY_SOURCE = Path(r"C:\Users\georg\Downloads\Temperature (1).xlsx")
 LAMEROO_RAINFALL_SOURCE = Path(r"C:\Users\georg\Downloads\IDCJAC0009_025562_1800.zip")
-WORKSPACE = Path(r"C:\Users\georg\Documents\Codex\2026-04-21-files-mentioned-by-the-user-week")
+WORKSPACE = Path(__file__).resolve().parent
 
 FORECAST_JSON_OUTPUT = WORKSPACE / "forecast-data.json"
 FORECAST_JS_OUTPUT = WORKSPACE / "forecast-data.js"
